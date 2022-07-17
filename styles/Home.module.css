@@ -130,30 +130,31 @@
   border-bottom: 0.3rem #30b97f solid;
 }
 
+
 /* ///////////// mobile /////////////// */
 @media screen and (max-width: 575px) {
-  .container {
-    background-image: url("/bg-intro-mobile.png");
-    flex-flow: column nowrap;
-    justify-content: flex-start;
-    padding: 10vh 4% 0 4%;
-  }
-  /* --- top section --- */
-  .section:nth-child(1) {
-    width: 100%;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    gap: 3vh;
-    flex-basis: 30vh;
-    text-align: center;
-  }
+    .container {
+        background-image: url("/bg-intro-mobile.png");
+        flex-flow: column nowrap;
+        justify-content: flex-start;
+        padding: 10vh 4% 0 4%;
+      }
+      /* --- top section --- */
+      .section:nth-child(1) {
+        width: 100%;
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: center;
+        gap: 3vh;
+        flex-basis: 30vh;
+        text-align: center;
+      }
+    
+      .section:nth-child(1) > .h2 {
+        padding: 0 3%;
+      }
 
-  .section:nth-child(1) > .h2 {
-    padding: 0 3%;
-  }
-
-  /* --- bottom section --- */
+        /* --- bottom section --- */
   .section:nth-child(2) {
     width: 100%;
     display: flex;
@@ -179,4 +180,5 @@
   .form {
     width: auto;
   }
+
 }

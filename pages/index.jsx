@@ -1,35 +1,45 @@
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as Yup from "yup";
+import { useRef, useState, useEffect } from "react";
 // check if email is valid.
 let regex = RegExp("[a-z0-9]+@[a-z]+.[a-z]{2,3}");
 
 export default function Home() {
   // form validation rules
-  const validationSchema = Yup.object().shape({
-    firstName: Yup.string().required("First name cannot be empty."),
-    lastName: Yup.string().required("Last name cannot be empty."),
-    email: Yup.string()
-      .required("Email cannot be empty.")
-      .email("Looks like this is not an email."),
-    password: Yup.string()
-      .min(3, "Password must be at least 3 characters")
-      .required("Password is required"),
-  });
+  const formRef = useRef(null);
+  const [formSubmit, SetFormSubmit] = useRef(false);
 
-  const formOptions = { resolver: yupResolver(validationSchema) };
-  // get functions to build form with useForm() hook
-  const { register, handleSubmit, reset, formState } = useForm(formOptions);
-  const { errors } = formState;
+  const myFunc = (e) => {
+    e.preventDefault();
 
-  function onSubmit(data) {
-    // display form data on success
-    alert("SUCCESS!! :-)\n\n" + JSON.stringify(data, null, 4));
-    return false;
-  }
+    if (formRef) {
+      let firstName = formRef.current.querySelector("#first_name");
+      let lastName = formRef.current.querySelector("#last_name");
+      let email = formRef.current.querySelector("#email");
+      let password = formRef.current.querySelector("#password");
+
+      firstName.children[0].value === ""
+        ? ((firstName.children[0].placeholder = ""),
+          firstName.children[1].classList.remove(styles.noshow))
+        : firstName.children[1].classList.add(styles.noshow);
+
+      lastName.children[0].value === ""
+        ? ((lastName.children[0].placeholder = ""),
+          lastName.children[1].classList.remove(styles.noshow))
+        : lastName.children[1].classList.add(styles.noshow);
+
+      email.children[0].value === "" || !regex.test(email.children[0].value)
+        ? ((email.children[0].placeholder = ""),
+          email.children[1].classList.remove(styles.noshow))
+        : email.children[1].classList.add(styles.noshow);
+
+      password.children[0].value === ""
+        ? ((password.children[0].placeholder = ""),
+          password.children[1].classList.remove(styles.noshow))
+        : password.children[1].classList.add(styles.noshow);
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -53,7 +63,7 @@ export default function Home() {
             thereafter
           </p>
         </div>
-        <form className={styles.form} action="">
+        <form onSubmit={myFunc} ref={formRef} className={styles.form} action="">
           <ul className={styles.ul}>
             <li className={styles.li} id="first_name">
               <input
@@ -62,14 +72,19 @@ export default function Home() {
                 className={styles.input}
                 placeholder="First Name"
               />
-              <Image
-                className={`${styles.noshow} ${styles.errorIcon}`}
-                src="/warning.png"
-                alt="error warning"
-                width={"1rem"}
-                height={"1rem"}
-              />
-              <small className={styles.noshow}>First name cannot be empty.</small>
+              <div className={styles.noshow}>
+                <div className={`${styles.errorIcon}`}>
+                  <Image
+                    src="/warning.png"
+                    alt="error warning"
+                    width={"20%"}
+                    height={"20%"}
+                  />
+                </div>
+                <small className={styles.small}>
+                  First name cannot be empty.
+                </small>
+              </div>
             </li>
             <li className={styles.li} id="last_name">
               <input
@@ -77,14 +92,19 @@ export default function Home() {
                 type="text"
                 placeholder="Last Name"
               />
-              <Image
-                className={`${styles.noshow} ${styles.errorIcon}`}
-                src="/warning.png"
-                alt="error warning"
-                width={"1rem"}
-                height={"1rem"}
-              />
-              <small className={styles.noshow}>Last name cannot be empty.</small>
+              <div className={styles.noshow}>
+                <div className={`${styles.errorIcon}`}>
+                  <Image
+                    src="/warning.png"
+                    alt="error warning"
+                    width={"20%"}
+                    height={"20%"}
+                  />
+                </div>
+                <small className={styles.small}>
+                  Last name cannot be empty.
+                </small>
+              </div>
             </li>
             <li className={styles.li} id="email">
               <input
@@ -92,15 +112,19 @@ export default function Home() {
                 type="text"
                 placeholder="Email Address"
               />
-              <Image
-                className={`${styles.noshow} ${styles.errorIcon}`}
-                src="/warning.png"
-                alt="error warning"
-                width={"1rem"}
-                height={"1rem"}
-              />
-              <small className={styles.noshow}>Email cannot be empty.</small>
-              <small className={styles.noshow}>Looks like this is not an email.</small>
+              <div className={styles.noshow}>
+                <div className={`${styles.errorIcon}`}>
+                  <Image
+                    src="/warning.png"
+                    alt="error warning"
+                    width={"20%"}
+                    height={"20%"}
+                  />
+                </div>
+                <small className={styles.small}>
+                  Email cannot be empty or looks like this is not an email.
+                </small>
+              </div>
             </li>
             <li className={styles.li} id="password">
               <input
@@ -108,14 +132,19 @@ export default function Home() {
                 type="password"
                 placeholder="Password"
               />
-              <Image
-                className={`${styles.noshow} ${styles.errorIcon}`}
-                src="/warning.png"
-                alt="error warning"
-                width={"1rem"}
-                height={"1rem"}
-              />
-              <small className={styles.noshow}>Password cannot be empty.</small>
+              <div className={styles.noshow}>
+                <div className={`${styles.errorIcon}`}>
+                  <Image
+                    src="/warning.png"
+                    alt="error warning"
+                    width={"20%"}
+                    height={"20%"}
+                  />
+                </div>
+                <small className={styles.small}>
+                  Password cannot be empty.
+                </small>
+              </div>
             </li>
             <li className={styles.li}>
               <button className={styles.button}>CLAIM YOUR FREE TRIAL</button>
