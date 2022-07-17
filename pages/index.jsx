@@ -1,8 +1,36 @@
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
+// check if email is valid.
+let regex = RegExp("[a-z0-9]+@[a-z]+.[a-z]{2,3}");
 
 export default function Home() {
+  // form validation rules
+  const validationSchema = Yup.object().shape({
+    firstName: Yup.string().required("First name cannot be empty."),
+    lastName: Yup.string().required("Last name cannot be empty."),
+    email: Yup.string()
+      .required("Email cannot be empty.")
+      .email("Looks like this is not an email."),
+    password: Yup.string()
+      .min(3, "Password must be at least 3 characters")
+      .required("Password is required"),
+  });
+
+  const formOptions = { resolver: yupResolver(validationSchema) };
+  // get functions to build form with useForm() hook
+  const { register, handleSubmit, reset, formState } = useForm(formOptions);
+  const { errors } = formState;
+
+  function onSubmit(data) {
+    // display form data on success
+    alert("SUCCESS!! :-)\n\n" + JSON.stringify(data, null, 4));
+    return false;
+  }
+
   return (
     <div className={styles.container}>
       {/* <Head>
@@ -11,8 +39,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head> */}
       <div className={`${styles.section} ${styles.top}`}>
-        <h2 classNmae={styles.h2}>Learn to code by watching others</h2>
-        <p classNmae={styles.p}>
+        <h2 className={styles.h2}>Learn to code by watching others</h2>
+        <p className={styles.p}>
           See how experienced developers solve problems in real-time. Watching
           scripited tutorials is great, but understanding how developers think
           is invaluable.
@@ -20,8 +48,8 @@ export default function Home() {
       </div>
       <div className={styles.section}>
         <div className={styles.article}>
-          <p classNmae={styles.p}>
-            <span classNmae={styles.span}>Try it free 7 days</span> then $20/mo
+          <p className={styles.p}>
+            <span className={styles.span}>Try it free 7 days</span> then $20/mo
             thereafter
           </p>
         </div>
@@ -29,10 +57,19 @@ export default function Home() {
           <ul className={styles.ul}>
             <li className={styles.li} id="first_name">
               <input
-                className={styles.input}
                 type="text"
+                name="firstName"
+                className={styles.input}
                 placeholder="First Name"
               />
+              <Image
+                className={`${styles.noshow} ${styles.errorIcon}`}
+                src="/warning.png"
+                alt="error warning"
+                width={"1rem"}
+                height={"1rem"}
+              />
+              <small className={styles.noshow}>First name cannot be empty.</small>
             </li>
             <li className={styles.li} id="last_name">
               <input
@@ -40,6 +77,14 @@ export default function Home() {
                 type="text"
                 placeholder="Last Name"
               />
+              <Image
+                className={`${styles.noshow} ${styles.errorIcon}`}
+                src="/warning.png"
+                alt="error warning"
+                width={"1rem"}
+                height={"1rem"}
+              />
+              <small className={styles.noshow}>Last name cannot be empty.</small>
             </li>
             <li className={styles.li} id="email">
               <input
@@ -47,6 +92,15 @@ export default function Home() {
                 type="text"
                 placeholder="Email Address"
               />
+              <Image
+                className={`${styles.noshow} ${styles.errorIcon}`}
+                src="/warning.png"
+                alt="error warning"
+                width={"1rem"}
+                height={"1rem"}
+              />
+              <small className={styles.noshow}>Email cannot be empty.</small>
+              <small className={styles.noshow}>Looks like this is not an email.</small>
             </li>
             <li className={styles.li} id="password">
               <input
@@ -54,16 +108,24 @@ export default function Home() {
                 type="password"
                 placeholder="Password"
               />
+              <Image
+                className={`${styles.noshow} ${styles.errorIcon}`}
+                src="/warning.png"
+                alt="error warning"
+                width={"1rem"}
+                height={"1rem"}
+              />
+              <small className={styles.noshow}>Password cannot be empty.</small>
             </li>
             <li className={styles.li}>
               <button className={styles.button}>CLAIM YOUR FREE TRIAL</button>
             </li>
           </ul>
-          <p classNmae={styles.p}>
+          <p className={styles.p}>
             By clicking on the button you are agreeing to
             <br />
             our
-            <span classNmae={styles.span}>Terms and Services</span>
+            <span className={styles.span}>Terms and Services</span>
           </p>
         </form>
       </div>
